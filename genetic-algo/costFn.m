@@ -1,4 +1,4 @@
-function cost = costFn(fis, model)
+function cost = costFn(fis, model, minData)
     % Update workspace variable for the controller.
     assignin('base','costFnFis',fis)
 
@@ -18,7 +18,12 @@ function cost = costFn(fis, model)
     % Cost function
     cart_pos_rms = rms(cart_pos.data);
     pen_pos_rms = rms(pen_pos.data);
-    cost = 0.1 * cart_pos_rms + 3 * pen_pos_rms;
+    cost = 0.1 * cart_pos_rms + 3 * pen_pos_rms
+    
+    if cost < minData.MinCost
+        minData.MinCost = cost;
+        minData.MinFis = fis;
+    end
 end
 
 % function cost = costFcn(fis,model,minLevel,refLevel,wsVarNames,varargin)
